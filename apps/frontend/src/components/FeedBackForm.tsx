@@ -1,12 +1,25 @@
 import {useState} from "react";
+import axios from "axios";
+import {feedbackRequest} from "common/src/feedbackTypes.ts";
 
 
 export function FeedBackForm() {
     const [name,setName] = useState("");
     const [feedBack,setFeedBack] = useState("");
 
-    function submit() {
-        console.log(`${name} gave the feedback of ${feedBack}`)
+    async function submit() {
+        const feedbackSent:feedbackRequest = {
+            name:name,
+            feedback:feedBack
+        };
+        const res = await axios.post("/api/feedback",feedbackSent,{
+            headers: {
+                "Content-Type":"application/json"
+            }
+        });
+        if(res.status == 200) {
+            console.log("sucsess");
+        }
     }
 
     function clear() {
